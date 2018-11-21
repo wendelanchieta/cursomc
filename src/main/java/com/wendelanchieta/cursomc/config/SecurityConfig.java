@@ -19,6 +19,7 @@ import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import com.wendelanchieta.cursomc.security.JWTAuthenticationFilter;
+import com.wendelanchieta.cursomc.security.JWTAuthorizationFilter;
 import com.wendelanchieta.cursomc.security.JWTUtil;
 
 /**
@@ -66,6 +67,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 		httpSecurity.cors().and().csrf().disable();
 		httpSecurity.authorizeRequests().antMatchers(HttpMethod.GET,PUBLIC_MATCHERS_GETS).permitAll().antMatchers(PUBLIC_MATCHERS).permitAll().anyRequest().authenticated();
 		httpSecurity.addFilter(new JWTAuthenticationFilter(authenticationManager(), jwtUtil));
+		httpSecurity.addFilter(new JWTAuthorizationFilter(authenticationManager(), jwtUtil, userDetailsService));
 		//Assegurando que o backend não cria sessão
 		httpSecurity.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 	}
